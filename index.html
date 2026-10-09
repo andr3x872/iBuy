@@ -11,6 +11,27 @@
   
   <title>Le Mie Spese</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Aggiunta stile veloce per il riquadro del totale */
+    .total-container {
+      background: var(--surface);
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .total-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .total-amount {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-top: 5px;
+    }
+  </style>
 </head>
 <body>
 
@@ -19,12 +40,18 @@
     <header>
       <h1>Le Mie Spese</h1>
     </header>
+
+    <!-- NUOVO: Riquadro del Totale -->
+    <div class="total-container">
+      <div class="total-label">Totale Visualizzato</div>
+      <div class="total-amount" id="displayTotal">€0.00</div>
+    </div>
     
     <div class="controls-container">
-      <!-- Aggiornato il placeholder per includere la città -->
       <input type="text" id="searchFilter" placeholder="Cerca categoria, descrizione o città...">
       <div class="filters-row">
-        <input type="month" id="monthFilter">
+        <!-- MODIFICATO: da type="month" a type="date" per filtrare il giorno esatto -->
+        <input type="date" id="dateFilter">
         <select id="sortSelect">
           <option value="dataDesc">Data (più recenti)</option>
           <option value="dataAsc">Data (meno recenti)</option>
@@ -32,6 +59,9 @@
           <option value="importoAsc">Importo (più basso)</option>
         </select>
       </div>
+      <button id="btnExport" class="btn-secondary" style="width: 100%; margin-top: 10px; font-size: 14px; padding: 10px;">
+        ⬇️ Esporta Spese in CSV (Excel)
+      </button>
     </div>
 
     <div id="expensesList" class="expenses-list">
@@ -43,6 +73,7 @@
 
   <!-- SCHERMATA 2: MODULO -->
   <div id="formView" class="view hidden">
+    <!-- ... (Il modulo rimane identico al passaggio precedente) ... -->
     <header>
       <h1 id="formTitle">Nuova Spesa</h1>
     </header>
@@ -65,7 +96,6 @@
         <input type="text" id="testo" required>
       </div>
 
-      <!-- NUOVO CAMPO: CITTÀ -->
       <div class="input-group">
         <label for="citta">Città</label>
         <input type="text" id="citta" required>
