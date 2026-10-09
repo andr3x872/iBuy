@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#007aff">
+  <link rel="apple-touch-icon" href="icona.png">
+  <link rel="manifest" href="manifest.json">
+  
+  <title>Le Mie Spese</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SCHERMATA 1: DASHBOARD -->
+  <div id="dashboardView" class="view">
+    <header>
+      <h1>Le Mie Spese</h1>
+    </header>
+    
+    <div class="controls-container">
+      <!-- Aggiornato il placeholder per includere la città -->
+      <input type="text" id="searchFilter" placeholder="Cerca categoria, descrizione o città...">
+      <div class="filters-row">
+        <input type="month" id="monthFilter">
+        <select id="sortSelect">
+          <option value="dataDesc">Data (più recenti)</option>
+          <option value="dataAsc">Data (meno recenti)</option>
+          <option value="importoDesc">Importo (più alto)</option>
+          <option value="importoAsc">Importo (più basso)</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="expensesList" class="expenses-list">
+      <!-- Le spese verranno iniettate qui -->
+    </div>
+
+    <button id="fabAdd" class="fab">+</button>
+  </div>
+
+  <!-- SCHERMATA 2: MODULO -->
+  <div id="formView" class="view hidden">
+    <header>
+      <h1 id="formTitle">Nuova Spesa</h1>
+    </header>
+    
+    <form id="expenseForm">
+      <input type="hidden" id="expenseId">
+      
+      <div class="input-group">
+        <label for="data">Data</label>
+        <input type="date" id="data" required>
+      </div>
+      
+      <div class="input-group">
+        <label for="importo">Importo (€)</label>
+        <input type="number" id="importo" step="0.01" inputmode="decimal" required>
+      </div>
+      
+      <div class="input-group">
+        <label for="testo">Titolo / Categoria</label>
+        <input type="text" id="testo" required>
+      </div>
+
+      <!-- NUOVO CAMPO: CITTÀ -->
+      <div class="input-group">
+        <label for="citta">Città</label>
+        <input type="text" id="citta" required>
+      </div>
+      
+      <div class="input-group">
+        <label for="descrizione">Descrizione (opzionale)</label>
+        <textarea id="descrizione" rows="3"></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" id="btnCancel" class="btn-secondary">Annulla</button>
+        <button type="submit" class="btn-primary">Salva Spesa</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('SW registrato', reg.scope))
+          .catch(err => console.error('SW errore', err));
+      });
+    }
+  </script>
+</body>
+</html>

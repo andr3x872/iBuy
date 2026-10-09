@@ -1,0 +1,49 @@
+:root {
+  --primary: #007aff;
+  --bg-color: #f2f2f7;
+  --surface: #ffffff;
+  --text-main: #1c1c1e;
+  --text-muted: #8e8e93;
+  --border: #c6c6c8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+body { background-color: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; }
+
+header { background-color: var(--surface); padding: 20px; text-align: center; border-bottom: 1px solid var(--border); padding-top: env(safe-area-inset-top, 20px); }
+header h1 { font-size: 20px; font-weight: 600; }
+
+.view { display: flex; flex-direction: column; min-height: 100vh; }
+.hidden { display: none !important; }
+
+/* Controlli di Filtro e Ordine */
+.controls-container { padding: 15px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.controls-container input, .controls-container select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; background: var(--bg-color); }
+.filters-row { display: flex; gap: 10px; }
+.filters-row input, .filters-row select { margin-bottom: 0; }
+
+/* Lista Spese */
+.expenses-list { padding: 15px; padding-bottom: 100px; }
+.expense-card { background: var(--surface); padding: 15px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+.expense-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.expense-title { font-weight: 600; font-size: 17px; }
+.expense-amount { font-weight: bold; color: var(--primary); font-size: 18px; }
+.expense-date { font-size: 13px; color: var(--text-muted); }
+.expense-desc { font-size: 14px; margin-top: 5px; color: #444; }
+.expense-actions { margin-top: 10px; display: flex; gap: 10px; justify-content: flex-end; }
+.btn-small { padding: 5px 10px; border: none; border-radius: 5px; font-size: 13px; cursor: pointer; }
+.btn-edit { background: #e5e5ea; color: var(--text-main); }
+.btn-delete { background: #ff3b30; color: white; }
+
+/* Bottone Fluttuante (FAB) */
+.fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--primary); color: white; border: none; border-radius: 30px; font-size: 32px; font-weight: 300; box-shadow: 0 4px 10px rgba(0,122,255,0.4); cursor: pointer; z-index: 100; }
+
+/* Modulo Inserimento */
+#expenseForm { padding: 20px; }
+.input-group { margin-bottom: 15px; }
+.input-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
+.input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; }
+.form-actions { display: flex; gap: 15px; margin-top: 30px; }
+.btn-primary, .btn-secondary { flex: 1; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: #e5e5ea; color: var(--text-main); }
