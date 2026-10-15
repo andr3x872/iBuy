@@ -8,30 +8,8 @@
   <meta name="theme-color" content="#007aff">
   <link rel="apple-touch-icon" href="icona.png">
   <link rel="manifest" href="manifest.json">
-  
   <title>Le Mie Spese</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Aggiunta stile veloce per il riquadro del totale */
-    .total-container {
-      background: var(--surface);
-      padding: 15px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .total-label {
-      font-size: 14px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .total-amount {
-      font-size: 32px;
-      font-weight: bold;
-      color: var(--primary);
-      margin-top: 5px;
-    }
-  </style>
 </head>
 <body>
 
@@ -39,89 +17,79 @@
   <div id="dashboardView" class="view">
     <header>
       <h1>Le Mie Spese</h1>
+      <!-- Tasto Impostazioni -->
+      <button id="btnSettings" class="icon-btn">⚙️</button>
     </header>
 
-    <!-- NUOVO: Riquadro del Totale -->
+    <!-- Limite di spesa in chiaro -->
     <div class="total-container">
-      <div class="total-label">Totale Visualizzato</div>
+      <div class="total-label">Spesa nel periodo</div>
       <div class="total-amount" id="displayTotal">€0.00</div>
+      <div id="budgetInfo" class="budget-info">Limite: Non impostato</div>
+      <div class="progress-bar-bg"><div id="budgetProgress" class="progress-bar-fill"></div></div>
     </div>
     
     <div class="controls-container">
-      <input type="text" id="searchFilter" placeholder="Cerca categoria, descrizione o città...">
-      <div class="filters-row">
-        <!-- MODIFICATO: da type="month" a type="date" per filtrare il giorno esatto -->
-        <input type="date" id="dateFilter">
-        <select id="sortSelect">
-          <option value="dataDesc">Data (più recenti)</option>
-          <option value="dataAsc">Data (meno recenti)</option>
-          <option value="importoDesc">Importo (più alto)</option>
-          <option value="importoAsc">Importo (più basso)</option>
-        </select>
+      <input type="text" id="searchFilter" placeholder="Cerca categoria, città...">
+      
+      <!-- Nuovo filtro Date: Da - A -->
+      <div class="filters-row date-range">
+        <div><label>Da:</label><input type="date" id="startDate"></div>
+        <div><label>A:</label><input type="date" id="endDate"></div>
       </div>
-      <button id="btnExport" class="btn-secondary" style="width: 100%; margin-top: 10px; font-size: 14px; padding: 10px;">
-        ⬇️ Esporta Spese in CSV (Excel)
-      </button>
+
+      <select id="sortSelect" style="margin-top:10px;">
+        <option value="dataDesc">Data (più recenti)</option>
+        <option value="dataAsc">Data (meno recenti)</option>
+        <option value="importoDesc">Importo (più alto)</option>
+        <option value="importoAsc">Importo (più basso)</option>
+      </select>
     </div>
 
-    <div id="expensesList" class="expenses-list">
-      <!-- Le spese verranno iniettate qui -->
-    </div>
-
+    <div id="expensesList" class="expenses-list"></div>
     <button id="fabAdd" class="fab">+</button>
   </div>
 
   <!-- SCHERMATA 2: MODULO -->
   <div id="formView" class="view hidden">
-    <!-- ... (Il modulo rimane identico al passaggio precedente) ... -->
-    <header>
-      <h1 id="formTitle">Nuova Spesa</h1>
-    </header>
-    
+    <header><h1 id="formTitle">Nuova Spesa</h1></header>
     <form id="expenseForm">
       <input type="hidden" id="expenseId">
-      
-      <div class="input-group">
-        <label for="data">Data</label>
-        <input type="date" id="data" required>
-      </div>
-      
-      <div class="input-group">
-        <label for="importo">Importo (€)</label>
-        <input type="number" id="importo" step="0.01" inputmode="decimal" required>
-      </div>
-      
-      <div class="input-group">
-        <label for="testo">Titolo / Categoria</label>
-        <input type="text" id="testo" required>
-      </div>
-
-      <div class="input-group">
-        <label for="citta">Città</label>
-        <input type="text" id="citta" required>
-      </div>
-      
-      <div class="input-group">
-        <label for="descrizione">Descrizione (opzionale)</label>
-        <textarea id="descrizione" rows="3"></textarea>
-      </div>
-      
+      <div class="input-group"><label>Data</label><input type="date" id="data" required></div>
+      <div class="input-group"><label>Importo (€)</label><input type="number" id="importo" step="0.01" inputmode="decimal" required></div>
+      <div class="input-group"><label>Titolo / Categoria</label><input type="text" id="testo" required></div>
+      <div class="input-group"><label>Città</label><input type="text" id="citta" required></div>
+      <div class="input-group"><label>Descrizione (opzionale)</label><textarea id="descrizione" rows="3"></textarea></div>
       <div class="form-actions">
-        <button type="button" id="btnCancel" class="btn-secondary">Annulla</button>
+        <button type="button" class="btn-secondary btnCancel">Annulla</button>
         <button type="submit" class="btn-primary">Salva Spesa</button>
       </div>
     </form>
   </div>
 
+  <!-- SCHERMATA 3: IMPOSTAZIONI -->
+  <div id="settingsView" class="view hidden">
+    <header><h1>Impostazioni</h1></header>
+    <div class="settings-content">
+      <div class="input-group">
+        <label>Limite di Spesa personalizzato (€)</label>
+        <input type="number" id="budgetLimitInput" placeholder="Es. 300" step="1" inputmode="decimal">
+        <p class="help-text">Verrà confrontato con il totale filtrato nella Dashboard.</p>
+        <button id="btnSaveBudget" class="btn-primary" style="padding: 10px; margin-top: 5px;">Salva Limite</button>
+      </div>
+      <hr>
+      <div class="input-group">
+        <label>Gestione Dati</label>
+        <button id="btnExport" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">⬇️ Esporta CSV</button>
+        <label for="csvFileInput" class="btn-secondary" style="display: block; text-align: center; cursor: pointer;">⬆️ Importa CSV</label>
+        <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+      </div>
+    </div>
+    <div style="padding: 20px;">
+      <button type="button" class="btn-secondary btnCancel" style="width: 100%;">Torna alla Home</button>
+    </div>
+  </div>
+
   <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('SW registrato', reg.scope))
-          .catch(err => console.error('SW errore', err));
-      });
-    }
-  </script>
 </body>
 </html>
